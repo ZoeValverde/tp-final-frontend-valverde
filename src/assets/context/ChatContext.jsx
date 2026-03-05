@@ -1,33 +1,47 @@
 import { createContext, useContext, useState } from "react"
 import { users as mockUsers } from "../services/MockApi"
 
+
 const ChatContext = createContext()
 
 const ChatProvider = ({ children }) => {
   const [users, setUsers] = useState(mockUsers)
   const [selectedUserId, setSelectedUserId] = useState(null)
   const [loggedUser, setLoggedUser] = useState(JSON.parse(localStorage.getItem("user")) || null)
+  const [savedAccounts, setSavedAccounts] = useState(JSON.parse(localStorage.getItem("Account")) || [])
+  
+  const handleAccounts = (newAccount) =>
+  {
+    const updatedAccounts = [... savedAccounts, newAccount];
+    setSavedAccounts(updatedAccounts);
+    localStorage.setItem("Account", JSON.stringify(updatedAccounts));
+  };
 
-  const handleUser = (user) => {
-    setLoggedUser(user)
-    localStorage.setItem("user", JSON.stringify(user))
-  }
 
   const handleSelectedUserId = (id) => {
     setSelectedUserId(id)
   }
 
-  const login = (userData) => {
-    const foundUser = mockUsers.find(user => user.email === userData.email)
+const login = (userData) => {
+  const AccountsLS = localStorage.getItem("Account");
+  const Accounts = JSON.parse(AccountsLS);
 
-    if (!foundUser) {
-      return false
-    }
+  if (!Accounts) return false;
 
-    if (foundUser.password === userData.password) {
-      return true
-    }
+  const foundUser = Accounts.find(
+    (user) =>
+      user.email === userData.email &&
+      user.password === userData.password &&
+      user.name === userData.name
+  );
+
+  if (!foundUser) {
+    return false;
   }
+
+
+  return true;
+};
 
   const logout = () => {
     localStorage.removeItem("user")
@@ -47,7 +61,7 @@ const ChatProvider = ({ children }) => {
   const selectedUser = users.find(user => user.id === selectedUserId)
 
   return (
-    <ChatContext.Provider value={{ users, handleSelectedUserId, login, logout, handleUser, loggedUser, handleMessages, selectedUser }}>
+    <ChatContext.Provider value={{ users, handleSelectedUserId, login, logout, loggedUser, handleMessages, selectedUser, handleAccounts }}>
       {children}
     </ChatContext.Provider>
   )

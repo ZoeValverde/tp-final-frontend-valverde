@@ -1,59 +1,56 @@
 import { useContext, useState } from "react"
-import { ChatContext } from "../context/ChatContext"
+import { ChatContext } from "../context/chatContext"
 import { useNavigate } from "react-router-dom"
 
 const Login = () => {
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
-  const [error, setError] = useState(null)
+    const [email, setEmail] = useState("")
+    const [password, setPassword] = useState("")
+    const [name, setName] = useState("")
+    const [error, setError] = useState(null)
+    const {login} = useContext(ChatContext)
 
-  const { login, handleUser } = useContext(ChatContext)
-
-  const navigate = useNavigate()
-
-  const handleChangeEmail = (e) => {
+    const handleChangeEmail = (e) => { 
     setEmail(e.target.value)
-  }
-
-  const handleChangePassword = (e) => {
-    setPassword(e.target.value)
-  }
-
-  const handleSubmit = (e) => {
-    e.preventDefault()
-    setError(null)
-    const response = login({ email, password })
-
-    if (!response) {
-      setError(true)
-      return
     }
 
-    handleUser({ email, password })
-    navigate("/")
-  }
+    const handleChangePassword = (e) => {
+        setPassword(e.target.value)
+    }
 
-  return (
-    <section>
-      <h2 className="title-login">Bienvenido, inicia sesión</h2>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="email"
-          placeholder="Correo electrónico"
-          onChange={handleChangeEmail}
-        />
-        <input
-          type="password"
-          placeholder="Contraseña"
-          onChange={handleChangePassword}
-        />
-        <button>Ingresar</button>
-        {
-          error && <p className="error-form">Error al ingresar</p>
+    const handleChangeName = (e) => {
+        setName(e.target.value)
+    }
+
+    const navigate = useNavigate()
+
+    const handleSubmit = (e) => {
+        setError(null)
+        e.preventDefault()
+        const response = login({ email, password, name })
+        if (!response) {
+            setError(true)
+            setName("")
+            setPassword("")
+            setEmail("")
+            return
         }
-      </form>
-    </section>
-  )
+
+
+     navigate("/")
+    }
+    
+    return (
+        <section>
+            <h2>INCIA SESIO</h2>
+            <form onSubmit={handleSubmit}>
+                <input type="email" placeholder="correo electronico"  onChange={handleChangeEmail} value={email}/>
+                <input type="text" placeholder="nombre de usuario"  onChange={handleChangeName} value={name}/>
+                <input type="password" placeholder="contraseña"  onChange={handleChangePassword} value={password}/>
+                <button>INGRESAR</button> 
+                {error && <h3>Error en alguno de los datos</h3>}
+            </form>
+        </section>
+    )
 }
 
 export { Login }
