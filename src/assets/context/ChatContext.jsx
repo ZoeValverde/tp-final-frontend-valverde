@@ -23,29 +23,26 @@ const ChatProvider = ({ children }) => {
   }
 
 const login = (userData) => {
-  const AccountsLS = localStorage.getItem("Account");
-  const Accounts = JSON.parse(AccountsLS);
+  const Accounts =JSON.parse(localStorage.getItem("Account"));
 
-  if (!Accounts) return false;
+  if (!Accounts) return;
 
   const foundUser = Accounts.find(
-    (user) =>
-      user.email === userData.email &&
-      user.password === userData.password &&
-      user.name === userData.name
+    (Account) =>
+      Account.email === userData.email &&
+         Account.name === userData.name &&
+      Account.password === userData.password 
   );
 
   if (!foundUser) {
     return false;
   }
 
-
-  return true;
+ setLoggedUser(true)
+  return true
+    ;
 };
 
-  const logout = () => {
-    localStorage.removeItem("user")
-  }
 
   const handleMessages = (newMessage) => {
     setUsers((prevValue) => prevValue.map((user) =>
@@ -61,7 +58,7 @@ const login = (userData) => {
   const selectedUser = users.find(user => user.id === selectedUserId)
 
   return (
-    <ChatContext.Provider value={{ users, handleSelectedUserId, login, logout, loggedUser, handleMessages, selectedUser, handleAccounts }}>
+    <ChatContext.Provider value={{ users, handleSelectedUserId, login,  loggedUser, handleMessages, selectedUser, handleAccounts, setLoggedUser }}>
       {children}
     </ChatContext.Provider>
   )
