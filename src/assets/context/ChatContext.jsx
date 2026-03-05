@@ -7,7 +7,7 @@ const ChatContext = createContext()
 const ChatProvider = ({ children }) => {
   const [users, setUsers] = useState(mockUsers)
   const [selectedUserId, setSelectedUserId] = useState(null)
-  const [loggedUser, setLoggedUser] = useState(JSON.parse(localStorage.getItem("user")) || null)
+  const [loggedUser, setLoggedUser] = useState(JSON.parse(localStorage.getItem("Account")) || null)
   const [savedAccounts, setSavedAccounts] = useState(JSON.parse(localStorage.getItem("Account")) || [])
   
   const handleAccounts = (newAccount) =>
@@ -41,7 +41,11 @@ const login = (userData) => {
  setLoggedUser(true)
   return true
     ;
-};
+  };
+  
+  const logout = () => {
+    setLoggedUser(false)
+}
 
 
   const handleMessages = (newMessage) => {

@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect, useContext } from "react"
-import { ChatContext } from "../context/ChatContext.jsx"
+import { ChatContext } from "../context/chatContext.jsx"
 import { useNavigate } from "react-router-dom"
 
 const Chat = () => {

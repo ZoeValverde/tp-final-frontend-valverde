@@ -11,6 +11,9 @@ const Register = () => {
   const { handleAccounts } = useContext(ChatContext)
   const navigate = useNavigate()
 
+  const handleNavigate= ()=> {
+   navigate("/Login")
+  }
 
     const handleSubmit = (e) => {
         e.preventDefault()
@@ -47,6 +50,8 @@ const Register = () => {
         />
         <button type="submit">INGRESAR</button>
       </form>
+      <h2>¿Ya tienes una cuenta?</h2>
+      <button onClick={handleNavigate}>Inicia Sesion aquí</button>
     </section>
   )
 }

@@ -7,7 +7,13 @@ const Login = () => {
     const [password, setPassword] = useState("")
     const [name, setName] = useState("")
     const [error, setError] = useState(null)
-    const {login} = useContext(ChatContext)
+    const { login } = useContext(ChatContext)
+
+    const navigate = useNavigate()
+    
+    const handleNavigate = () => {
+        navigate("/Register")
+    }
 
     const handleChangeEmail = (e) => { 
     setEmail(e.target.value)
@@ -21,20 +27,14 @@ const Login = () => {
         setName(e.target.value)
     }
 
-    const navigate = useNavigate()
-
     const handleSubmit = (e) => {
         setError(null)
         e.preventDefault()
         const response = login({ email, password, name })
         if (!response) {
             setError(true)
-            setName("")
-            setPassword("")
-            setEmail("")
             return
         }
-
 
      navigate("/")
     }
@@ -49,6 +49,8 @@ const Login = () => {
                 <button>INGRESAR</button> 
                 {error && <h3>Error en alguno de los datos</h3>}
             </form>
+            <h2>¿No tienes una cuenta?</h2>
+            <button onClick={handleNavigate}>Registrate Aquí</button>
         </section>
     )
 }
